@@ -5,10 +5,18 @@ export default function AuthenticationForm() {
   const [lastName, setLastName] = useState("");
 
   const submit = e => {
-    e.preventDefault();
-    setFirstName("");
-    setLastName("");
-  };
+    fetch('http://localhost:4000', {
+      method: 'POST',
+      body: JSON.stringify({ firstName }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(res => res.json())
+      .then(data => { console.log('Success:', data); })
+      .catch((error) => {
+        console.error('Error: ', error);
+      });
+    e.preventDefault()
+  }
 
   return (
     <form onSubmit={submit}>
@@ -19,7 +27,7 @@ export default function AuthenticationForm() {
         placeholder="First Name"
         required
       />
-      <input 
+      <input
         value={lastName}
         onChange={event => setLastName(event.target.value)}
         type="text"
