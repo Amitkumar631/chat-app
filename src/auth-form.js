@@ -1,21 +1,24 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function AuthenticationForm() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [result, setResult] = useState(null);
 
   const submit = e => {
-    fetch('http://localhost:4000', {
-      method: 'POST',
-      body: JSON.stringify({ firstName }),
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then(res => res.json())
-      .then(data => { console.log('Success:', data); })
-      .catch((error) => {
-        console.error('Error: ', error);
+    e.preventDefault();
+    axios
+      .post('/send', { firstName, lastName })
+      .then(response => {
+        setResult(response.data);
+        setFirstName("");
+        setLastName("");
+      })
+      .catch(() => {
+        setResult({ success: false, message: 'Something went wrong. Try again later' });
       });
-    e.preventDefault()
+    console.log('Success');
   }
 
   return (
@@ -34,7 +37,7 @@ export default function AuthenticationForm() {
         placeholder="Last Name"
         required
       />
-      <button>Submit</button>
+      <button type="submit">Submit</button>
     </form>
   );
 }

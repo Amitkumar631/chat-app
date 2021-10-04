@@ -1,37 +1,16 @@
-import path from "path";
-import fs from "fs";
-import React from "react";
-import express from "express";
-import ReactDOMServer from "react-dom/server";
-
-import AuthenticationForm from "../src/auth-form.js";
-
-const PORT = process.env.PORT || 4000;
+const path = require('path');
+const express = require('express');
 const app = express();
 
-app.use(express.static("./build"));
+const buildPath = path.join(__dirname, '..', 'build');
+app.use(express.json());
+app.use(express.static(buildPath));
 
-app.get("/*", (req, res) => {
-  const app = ReactDOMServer.renderToString(
-    <AuthenticationForm />
-  );
-
-  const indexFile = path.resolve(
-    "./build/index.html"
-  );
-
-  fs.readFile(indexFile, "utf8", (err, data) => {
-    return res.send(
-      data.replace(
-        '<div id="root"></div>',
-        `<div id="root">${app}</div>`
-      )
-    );
-  });
+app.post('/send', (req, res) => {
+    console.log(req.body);
+    res.send(req.body);
 });
 
-app.listen(PORT, () =>
-  console.log(
-    `Server is listening on port ${PORT}`
-  )
-);
+app.listen(3030, () => {
+    console.log('server start on port 3030');
+});
