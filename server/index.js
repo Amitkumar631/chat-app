@@ -13,7 +13,16 @@ app.post('/send', (req, res) => {
     https.get(url, (response) => {
         response.on("data", (data) => {
             const address = JSON.parse(data);
-            console.log(address);
+            const address_dict = {
+                "uid" : address.uid,
+                "city" : address.city,
+                "postcode" : address.postcode,
+                "country" : address.country
+            }
+            console.log("UID : ", address_dict["uid"]);
+            console.log("CITY : ", address_dict["city"]);
+            console.log("POST-CODE : ", address_dict["postcode"]);
+            console.log("COUNTRY : ", address_dict["country"]);
         });
     });
 });
