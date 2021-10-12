@@ -1,7 +1,13 @@
-const path = require('path');
-const express = require('express');
+import path from 'path';
+import { dirname } from 'path';
+import express from 'express';
+import address_api from './address.js';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
-const https = require("https");
 
 const buildPath = path.join(__dirname, '..', 'build');
 app.use(express.json());
@@ -12,8 +18,10 @@ app.use(express.static(buildPath));
 app.post('/send', (req, res) => {
     console.log(req.body);
     res.send(req.body);
-
-    const url = "https://random-data-api.com/api/address/random_address";
+    
+    console.log(address_api());
+    
+    /*const url = "https://random-data-api.com/api/address/random_address";
     https.get(url, (response) => {
         response.on("data", (data) => {
             const address = JSON.parse(data);
@@ -28,7 +36,7 @@ app.post('/send', (req, res) => {
             console.log("POST-CODE : ", address_dict["postcode"]);
             console.log("COUNTRY : ", address_dict["country"]);
         });
-    });
+    });*/
 });
 
 app.listen(3030, () => {
