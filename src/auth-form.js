@@ -4,21 +4,23 @@ import axios from "axios";
 export default function AuthenticationForm() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+
   const [result, setResult] = useState(null);
 
   const submit = e => {
     e.preventDefault();
     axios
-      .post('/send', { firstName, lastName })
+      .post('/send', { firstName, lastName, dateOfBirth})
       .then(response => {
         setResult(response.data);
         setFirstName("");
         setLastName("");
+        setDateOfBirth("");
       })
       .catch(() => {
         setResult({ success: false, message: 'Something went wrong. Try again later' });
       });
-    console.log('Success');
   }
 
   return (
@@ -35,6 +37,12 @@ export default function AuthenticationForm() {
         onChange={event => setLastName(event.target.value)}
         type="text"
         placeholder="Last Name"
+        required
+      />
+      <input 
+        value={dateOfBirth}
+        onChange={event => setDateOfBirth(event.target.value)}
+        type="date"
         required
       />
       <button type="submit">Submit</button>
