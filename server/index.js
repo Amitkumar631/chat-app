@@ -19,7 +19,10 @@ app.post('/send', (req, res) => {
     console.log(req.body);
     res.send(req.body);
     
-    console.log(address_api());
+    address_api()
+        .then(response => {
+            console.log(response);
+        })
     
     /*const url = "https://random-data-api.com/api/address/random_address";
     https.get(url, (response) => {
